@@ -20,9 +20,9 @@ import Image from "next/image";
 import Link from "next/link";
 
 export default async function Home() {
-  const { data, success, error } = await getCoinsList();
+  const { data = [], success, error } = await getCoinsList();
 
-  if (!success) {
+  if (!success || !data) {
     return <div>Error: {error}</div>;
   }
 

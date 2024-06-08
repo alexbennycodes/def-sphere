@@ -1,6 +1,7 @@
 "use client";
 
 import { createWeb3Modal, defaultConfig } from "@web3modal/ethers/react";
+import React from "react";
 
 // 1. Get projectId at https://cloud.walletconnect.com
 export const projectId = "07b88eb6abdee891fb01f0b202f6ebf3";
@@ -43,6 +44,6 @@ createWeb3Modal({
   enableOnramp: true, // Optional - false as default
 });
 
-export function Web3Modal({ children }) {
-  return children;
+export function Web3Modal({ children }: { children: React.ReactNode }) {
+  return <>{children}</>;
 }
