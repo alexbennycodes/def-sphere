@@ -4,6 +4,7 @@ import "./globals.css";
 import { Web3Modal } from "@/context/web3modal";
 import Navbar from "@/components/layout/navbar";
 import { ThemeProvider } from "@/components/theme-provider";
+import Providers from "./providers";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -28,8 +29,12 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <Web3Modal>
-            <Navbar />
-            {children}
+            <Providers>
+              <>
+                <Navbar />
+                {children}
+              </>
+            </Providers>
           </Web3Modal>
         </ThemeProvider>
       </body>
