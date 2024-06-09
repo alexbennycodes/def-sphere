@@ -3,11 +3,12 @@
 import { getCoinHistoricalDataById } from "@/actions/coin";
 import { cn } from "@/lib/utils";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { AreaChart } from "@tremor/react";
+import { AreaChart, CustomTooltipProps } from "@tremor/react";
 import { format } from "date-fns";
 
-import { useEffect } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
+import { CoinHistoricalDataType } from "@/types/coin";
+import { useEffect } from "react";
 
 type Props = {
   days: number;
@@ -19,7 +20,7 @@ const getDate = (date: string) => {
   return new Date(date).toLocaleString();
 };
 
-const updateChartData = (data: CoinHistoricalData) => {
+const updateChartData = (data: CoinHistoricalDataType) => {
   const chartData = data.prices.map(([date, price]) => ({
     date: getDate(date),
     price: (Math.round(price * 100) / 100).toFixed(2),
@@ -28,26 +29,24 @@ const updateChartData = (data: CoinHistoricalData) => {
   return chartData;
 };
 
-const dataFormatter = (number) =>
+const dataFormatter = (number: number) =>
   `$${Intl.NumberFormat("us").format(number).toString()}`;
 
 const CoinPriceChart = ({ days, id, className }: Props) => {
   const queryClient = useQueryClient();
 
-  const { data, error, isFetching, isPreviousData } = useQuery({
+  const { data, error, isFetching } = useQuery({
     queryKey: ["coinHistory", days],
     queryFn: () => getCoinHistoricalDataById(id, days),
     refetchOnWindowFocus: false,
   });
 
   useEffect(() => {
-    if (!isPreviousData) {
-      queryClient.prefetchQuery({
-        queryKey: ["coinHistory", days],
-        queryFn: () => getCoinHistoricalDataById(id, days),
-      });
-    }
-  }, [days, isPreviousData, queryClient, id]);
+    queryClient.prefetchQuery({
+      queryKey: ["coinHistory", days],
+      queryFn: () => getCoinHistoricalDataById(id, days),
+    });
+  }, [days, queryClient, id]);
 
   if (isFetching) return <Skeleton className="h-[320px]" />;
 
@@ -56,7 +55,7 @@ const CoinPriceChart = ({ days, id, className }: Props) => {
 
   const chartData = updateChartData(data?.data);
 
-  const customTooltip = (props) => {
+  const customTooltip = (props: CustomTooltipProps) => {
     const { payload, active } = props;
     if (!active || !payload) return null;
     return (
@@ -68,7 +67,7 @@ const CoinPriceChart = ({ days, id, className }: Props) => {
             />
             <div className="space-y-1">
               <p className="font-medium text-tremor-content-emphasis">
-                ${category.value.toLocaleString()}
+                ${category?.value?.toLocaleString()}
               </p>
               <p className="text-tremor-content">
                 {format(category.payload.date, "dd MMM yyyy hh:mm a")}

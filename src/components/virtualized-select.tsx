@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import { Button } from "@/components/ui/button";
 import {
   Command,
@@ -23,8 +25,25 @@ const VirtualizedCommand = ({
   placeholder,
   selectedOption,
   onSelectOption,
+}: {
+  height: string | number;
+  options: Array<{
+    value: string;
+    label: JSX.Element | string;
+    key: string;
+  }>;
+  placeholder: string;
+  selectedOption: string;
+  onSelectOption: (value: string) => void;
 }) => {
-  const [filteredOptions, setFilteredOptions] = React.useState(options);
+  const [filteredOptions, setFilteredOptions] = React.useState<
+    | {
+        value: string;
+        label: JSX.Element | string;
+        key: string;
+      }[]
+    | []
+  >(options);
   const parentRef = React.useRef(null);
 
   const virtualizer = useVirtualizer({
@@ -36,7 +55,7 @@ const VirtualizedCommand = ({
 
   const virtualOptions = virtualizer.getVirtualItems();
 
-  const handleSearch = (search) => {
+  const handleSearch = (search: string) => {
     setFilteredOptions(
       options.filter((option) =>
         JSON.parse(option.value)
@@ -46,7 +65,7 @@ const VirtualizedCommand = ({
     );
   };
 
-  const handleKeyDown = (event) => {
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
     if (event.key === "ArrowDown" || event.key === "ArrowUp") {
       event.preventDefault();
     }
@@ -116,8 +135,21 @@ export function VirtualizedCombobox({
   onSelect = () => {},
   valueBtnClassName = "",
   valueBtnVariant = "outline",
+}: {
+  options: {
+    value: string;
+    label: JSX.Element | string;
+    key: string;
+  }[];
+  value: string;
+  searchPlaceholder?: string;
+  width?: string;
+  height?: string;
+  onSelect?: (value: string) => void;
+  valueBtnClassName?: string;
+  valueBtnVariant?: string;
 }) {
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = React.useState<boolean>(false);
 
   return (
     <Popover open={open} onOpenChange={setOpen}>

@@ -1,6 +1,7 @@
 "use server";
 
 import { erc20abi } from "@/lib/erc20abi";
+import { CoinListType } from "@/types/coin";
 import BigNumber from "bignumber.js";
 import { stringify } from "querystring";
 import { Web3 } from "web3";
@@ -9,6 +10,25 @@ const API_URL = process.env.NEXT_PUBLIC_0X_SWAP_API_URL!;
 
 const options = {
   headers: { "0x-api-key": process.env.NEXT_PUBLIC_0X_API_KEY! },
+};
+
+export const getSwapCoinList = async () => {
+  try {
+    const response = await fetch(
+      "https://tokens.coingecko.com/uniswap/all.json"
+    );
+    if (!response.ok) {
+      throw new Error(`Error fetching swap coin list: ${response.statusText}`);
+    }
+    const tokenListJSON: { tokens: CoinListType[] } = await response.json();
+    return { data: tokenListJSON.tokens || [], error: null, success: true };
+  } catch (error) {
+    if (error instanceof Error) {
+      return { data: null, error: error.message, success: false };
+    } else {
+      return { data: null, error: "Something went wrong", success: false };
+    }
+  }
 };
 
 export const getSwapPrice = async ({
@@ -55,7 +75,7 @@ export async function getQuote({
 }: {
   fromAddress: string;
   toAddress: string;
-  amount: string;
+  amount: number;
   takerAddress: string;
 }) {
   const params = {
@@ -91,7 +111,7 @@ export const swapToken = async ({
 }: {
   fromAddress: string;
   toAddress: string;
-  amount: string;
+  amount: number;
   takerAddress: string;
 }) => {
   const web3 = new Web3(Web3.givenProvider);
@@ -115,6 +135,7 @@ export const swapToken = async ({
         console.log("tx: ", tx);
       });
     const receipt = await web3.eth.sendTransaction(swapQuoteData);
+    return { data: receipt, error: null, success: true };
   } catch (error) {
     if (error instanceof Error) {
       return { data: null, error: error.message, success: false };

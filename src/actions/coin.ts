@@ -40,7 +40,7 @@ export const getCoinById = async (coinId: string) => {
       throw new Error(`Error fetching coins data: ${res.statusText}`);
     }
 
-    const data: CoinIdType = await res.json();
+    const data: CoinIdType | null = await res.json();
 
     return { data, error: null, success: true };
   } catch (e: unknown) {

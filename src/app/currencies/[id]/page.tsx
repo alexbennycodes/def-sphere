@@ -2,7 +2,7 @@ import { getCoinById } from "@/actions/coin";
 import Client from "./client";
 
 const Page = async ({ params: { id } }: { params: { id: string } }) => {
-  const { data = [], success, error } = await getCoinById(id);
+  const { data = null, success, error } = await getCoinById(id);
 
   if (!success || !data) {
     return <div>Error: {error}</div>;

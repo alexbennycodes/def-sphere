@@ -74,3 +74,17 @@ export interface CoinHistoricalData {
   market_caps: [number, number][];
   total_volumes: [number, number][];
 }
+
+export interface CoinHistoricalDataType {
+  prices: [string, number][];
+  market_caps: [string, number][];
+  total_volumes: [string, number][];
+}
+
+export interface CoinListType {
+  address: string;
+  symbol: string;
+  name: string;
+  logoURI: string;
+  decimals: number;
+}

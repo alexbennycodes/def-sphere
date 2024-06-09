@@ -1,6 +1,6 @@
 "use client";
 
-import { getSwapPrice } from "@/actions/coin";
+import { getSwapPrice, swapToken } from "@/actions/swap";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -19,16 +19,17 @@ import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { VirtualizedCombobox } from "./virtualized-select";
+import { CoinListType } from "@/types/coin";
 
 const FormSchema = z.object({
-  transferAmount: z.string(),
-  transferCoinType: z.string(),
+  transferAmount: z.string().min(2),
+  transferCoinType: z.string().min(2),
   recieveAmount: z.string(),
   recieveCoinType: z.string(),
 });
 
 type Props = {
-  tokenList: Token[] | [];
+  tokenList: CoinListType[] | [];
 };
 
 const CoinSwapForm = ({ tokenList = [] }: Props) => {
@@ -48,17 +49,17 @@ const CoinSwapForm = ({ tokenList = [] }: Props) => {
 
   async function onSubmit(data: z.infer<typeof FormSchema>) {
     if (address) {
-      const { success, data, error } = await swapToken({
-        fromAddress: JSON.parse(form.getValues("transferCoinType")).address,
-        toAddress: JSON.parse(form.getValues("recieveCoinType")).address,
+      const { success, error } = await swapToken({
+        fromAddress: JSON.parse(data.recieveCoinType).address,
+        toAddress: JSON.parse(data.transferCoinType).address,
         amount: Number(
-          form.getValues("transferAmount") *
-            10 ** JSON.parse(form.getValues("transferCoinType")).decimals
+          Number(data.transferAmount) *
+            10 ** JSON.parse(data.transferCoinType).decimals
         ),
         takerAddress: address,
       });
       if (success) {
-        form.resetField();
+        form.reset();
         toast({
           title: "Success",
           description: "Tokens swapped successfully",
