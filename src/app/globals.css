@@ -77,3 +77,13 @@
   border-radius: 6px;
   border: 0px solid #ffffff;
 }
+
+.font-title-light-italic {
+  font-family: "Cormorant Garamond", serif;
+  font-weight: 300;
+  font-style: italic;
+}
+
+.font-title {
+  font-family: "Cormorant Garamond", serif;
+}

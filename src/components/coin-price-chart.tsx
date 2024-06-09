@@ -1,6 +1,6 @@
 "use client";
 
-import { getCoinHistoricalDataById } from "@/actions";
+import { getCoinHistoricalDataById } from "@/actions/coin";
 import { cn } from "@/lib/utils";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { AreaChart } from "@tremor/react";

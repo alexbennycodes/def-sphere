@@ -1,16 +1,9 @@
-"use client";
-
 import Link from "next/link";
-
-import { cn } from "@/lib/utils";
 import { Icons } from "@/components/shared/icons";
-import { useWeb3ModalAccount } from "@web3modal/ethers/react";
 import ThemeToggle from "@/components/shared/theme-toggle";
 import UserNav from "@/components/user-nav";
 
 const Navbar = () => {
-  const { isConnected } = useWeb3ModalAccount();
-
   return (
     <nav className="sticky top-0 z-30 border-b bg-background/60 px-4 backdrop-blur-xl transition-all py-4">
       <div className="container flex items-center justify-between">
@@ -22,8 +15,17 @@ const Navbar = () => {
         </Link>
 
         <div className="ml-auto flex items-center space-x-4">
+          <Link
+            href="/currencies"
+            className="text-sm font-medium hover:text-primary"
+          >
+            Coin Tracker
+          </Link>
+          <Link href="/swap" className="text-sm font-medium hover:text-primary">
+            Swap token
+          </Link>
           <ThemeToggle />
-          {isConnected ? <UserNav /> : <w3m-button />}
+          <UserNav />
         </div>
       </div>
     </nav>

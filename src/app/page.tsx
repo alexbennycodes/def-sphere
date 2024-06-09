@@ -1,100 +1,28 @@
-import { getCoinsList } from "@/actions";
-import { Badge } from "@/components/ui/badge";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-import { CoinType } from "@/types/coin";
-import Image from "next/image";
 import Link from "next/link";
 
 export default async function Home() {
-  const { data = [], success, error } = await getCoinsList();
-
-  if (!success || !data) {
-    return <div>Error: {error}</div>;
-  }
-
   return (
-    <main className="flex flex-col items-center justify-between py-24">
-      <div className="container w-full">
-        <Card>
-          <CardHeader>
-            <CardTitle>Today&apos;s Cryptocurrency Prices</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Name</TableHead>
-                  <TableHead>Current Price</TableHead>
-                  <TableHead>Market Cap</TableHead>
+    <section className="relative">
+      <div className="flex flex-col items-center justify-center container max-w-5xl overflow-x-hidden py-48 max-w-screen">
+        <div className="w-full duration-1000 animate-in fade-in-10 slide-in-from-bottom-10">
+          <h1 className="text-7xl lg:text-[95px] font-title-light-italic tracking-tight font-light">
+            Defi Sphere
+          </h1>
 
-                  <TableHead className="hidden md:table-cell">
-                    Total Volume
-                  </TableHead>
-                  <TableHead className="hidden md:table-cell">
-                    High (24h)
-                  </TableHead>
-                  <TableHead className="hidden md:table-cell">
-                    Low (24h)
-                  </TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {data.map((coin: CoinType) => (
-                  <TableRow key={coin.id}>
-                    <TableCell className="font-medium text-lg">
-                      <Link
-                        href={`/currencies/${coin.id}`}
-                        className="flex items-center gap-2"
-                      >
-                        <Image
-                          alt="Coin image"
-                          className="aspect-square rounded-md object-cover"
-                          height="32"
-                          src={coin.image}
-                          width="32"
-                        />
-                        {coin.name}
-
-                        <span className="text-xs text-muted-foreground uppercase">
-                          {coin.symbol}
-                        </span>
-                      </Link>
-                    </TableCell>
-
-                    <TableCell>
-                      ${coin.current_price.toLocaleString()}
-                    </TableCell>
-                    <TableCell>${coin.market_cap.toLocaleString()}</TableCell>
-                    <TableCell className="hidden md:table-cell">
-                      ${coin.total_volume.toLocaleString()}
-                    </TableCell>
-                    <TableCell className="hidden md:table-cell">
-                      ${coin.high_24h.toLocaleString()}
-                    </TableCell>
-                    <TableCell className="hidden md:table-cell">
-                      ${coin.low_24h.toLocaleString()}
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </CardContent>
-        </Card>
+          <p className="mt-5 lg:mt-12 lg:text-xl text-gray-200/60 font-medium lg:tracking-wider text-balance">
+            Defi Sphere is a decentralized finance application. Connect your
+            wallet to start using Defi Sphere. Token swaps, lending, borrowing,
+            and more. Real-time market data, analytics, and more.
+          </p>
+          <Link
+            href="/swap"
+            className="relative text-sm lg:text-base inline-flex h-10 lg:h-12 items-center justify-center bg-primary px-6 font-medium text-white transition-colors focus:outline-none focus:ring-0 mt-10 rounded-full group/button"
+          >
+            <div className="absolute -inset-0.5 -z-10 rounded-full bg-gradient-to-b from-primary to-primary/80 opacity-75 blur group-hover/button:opacity-100 group-hover/button:blur-md transition-all duration-200 ease-in-out" />
+            Swap Token
+          </Link>
+        </div>
       </div>
-    </main>
+    </section>
   );
 }

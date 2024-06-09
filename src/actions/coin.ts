@@ -1,7 +1,6 @@
 "use server";
 
 import { CoinIdType, CoinType } from "@/types/coin";
-import { error } from "console";
 
 const API_URL = process.env.NEXT_COIN_GECKO_API_URL!;
 
@@ -65,7 +64,7 @@ export const getCoinHistoricalDataById = async (
       throw new Error(`Error fetching coins data: ${res.statusText}`);
     }
 
-    const data: CoinHistoricalData = await res.json();
+    const data = await res.json();
 
     return { data, error: null, success: true };
   } catch (e: unknown) {

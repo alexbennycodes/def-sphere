@@ -1,4 +1,4 @@
-import { getCoinById } from "@/actions";
+import { getCoinById } from "@/actions/coin";
 import Client from "./client";
 
 const Page = async ({ params: { id } }: { params: { id: string } }) => {

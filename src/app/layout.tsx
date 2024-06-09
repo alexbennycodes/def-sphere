@@ -1,9 +1,10 @@
+import Navbar from "@/components/layout/navbar";
+import { ThemeProvider } from "@/components/theme-provider";
+import { Toaster } from "@/components/ui/toaster";
+import { Web3Modal } from "@/context/web3modal";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import { Web3Modal } from "@/context/web3modal";
-import Navbar from "@/components/layout/navbar";
-import { ThemeProvider } from "@/components/theme-provider";
 import Providers from "./providers";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -30,10 +31,9 @@ export default function RootLayout({
         >
           <Web3Modal>
             <Providers>
-              <>
-                <Navbar />
-                {children}
-              </>
+              <Navbar />
+              {children}
+              <Toaster />
             </Providers>
           </Web3Modal>
         </ThemeProvider>
