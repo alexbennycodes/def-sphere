@@ -4,7 +4,7 @@ import { createWeb3Modal, defaultConfig } from "@web3modal/ethers/react";
 import React from "react";
 
 // 1. Get projectId at https://cloud.walletconnect.com
-export const projectId = process.env.NEXT_WEB3_MODAL_PROJECT_ID!;
+export const projectId = process.env.NEXT_PUBLIC_WEB3_MODAL_PROJECT_ID || "";
 
 // 2. Set chains
 const mainnet = {
