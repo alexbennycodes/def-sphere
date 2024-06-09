@@ -135,10 +135,10 @@ const CoinSwapForm = ({ tokenList = [] }: Props) => {
     getPrice();
   }, [
     form,
-    form.getValues("transferAmount"),
-    form.getValues("transferCoinType"),
-    form.getValues("recieveAmount"),
-    form.getValues("recieveCoinType"),
+    form.watch("transferAmount"),
+    form.watch("transferCoinType"),
+    form.watch("recieveAmount"),
+    form.watch("recieveCoinType"),
   ]);
 
   return (
@@ -200,7 +200,7 @@ const CoinSwapForm = ({ tokenList = [] }: Props) => {
             render={({ field }) => (
               <FormItem className="col-span-4">
                 <FormControl>
-                  <Input placeholder="Enter amount" {...field} />
+                  <Input placeholder="Enter amount" {...field} disabled />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -243,8 +243,12 @@ const CoinSwapForm = ({ tokenList = [] }: Props) => {
         </div>
 
         {gasPrice && <div>Gas price: {gasPrice}</div>}
-        <Button type="submit" className="w-full" disabled={!gasPrice}>
-          Swap
+        <Button
+          type="submit"
+          className="w-full"
+          disabled={!gasPrice || form.formState.isSubmitting}
+        >
+          {form.formState.isSubmitting ? "Swapping..." : "Swap"}
         </Button>
       </form>
     </Form>
